@@ -9,7 +9,7 @@ This program detects virtual machine environments by checking for specific files
 - **File Checking**: The program checks for the existence of certain files in critical system directories.
 - **Pattern Matching**: It also searches for files matching specific patterns that are characteristic of virtual machine configurations.
 - **Detection Logic**: If any of the monitored files or patterns are found, the program displays an error message stating "This program can't run in a virtual machine." and exits.
-- **Inspiration**: This program is inspired by techniques outlined at [Unprotect.it](https://unprotect.it/technique/detecting-virtual-environment-files/) and has been extended to include additional file patterns.
+- **Inspiration**: This program is inspired by techniques outlined at [Unprotect.it, Detecting Virtual Environment Files](https://unprotect.it/technique/detecting-virtual-environment-files/) and has been extended to include additional file patterns.
 
 ## Additional Notes
 
