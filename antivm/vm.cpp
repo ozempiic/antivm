@@ -94,14 +94,17 @@ int CheckFile()
 
     if (foundVmFile)
     {
+        HWND hwndConsole = GetConsoleWindow();
+        ShowWindow(hwndConsole, SW_HIDE); 
+
         MessageBox(NULL, "This program can't run in a virtual machine.", "Error", MB_OK | MB_ICONERROR);
+        return 1; 
     }
     else
     {
         MessageBox(NULL, "Not a VM.", "Success", MB_OK | MB_ICONEXCLAMATION);
+        return 0; 
     }
-
-    return 0;
 }
 
 extern "C" BOOL WINAPI Wow64DisableWow64FsRedirection(PVOID* OldValue);
@@ -112,12 +115,22 @@ int main()
     PVOID OldValue;
     if (Wow64DisableWow64FsRedirection(&OldValue))
     {
-        CheckFile();
+        int result = CheckFile();
         Wow64RevertWow64FsRedirection(OldValue);
+
+        if (result == 1)
+        {
+            return 0; 
+        }
     }
     else
     {
         cout << "Failed to disable WOW64 file system redirection." << endl;
+        return 1;
     }
+
+    cout << "Press Enter to exit...";
+    cin.get(); 
+
     return 0;
 }
