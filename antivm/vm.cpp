@@ -9,7 +9,7 @@ BOOL FileExists(LPCTSTR szPath)
     return (dwAttrib != INVALID_FILE_ATTRIBUTES) && !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
 }
 
-BOOL CheckFilePattern(LPCTSTR szPath, LPCTSTR pattern)
+BOOL CheckFilePattern(LPCTSTR pattern)
 {
     WIN32_FIND_DATA findFileData;
     HANDLE hFind = FindFirstFile(pattern, &findFileData);
@@ -20,8 +20,14 @@ BOOL CheckFilePattern(LPCTSTR szPath, LPCTSTR pattern)
     }
     else
     {
+        bool found = false;
+        do
+        {
+            found = true;
+        } while (FindNextFile(hFind, &findFileData) != 0);
+
         FindClose(hFind);
-        return TRUE;
+        return found;
     }
 }
 
@@ -48,6 +54,7 @@ int CheckFile()
         "C:\\WINDOWS\\system32\\vboxservice.exe",
         "C:\\WINDOWS\\system32\\vboxtray.exe",
         "C:\\WINDOWS\\system32\\VBoxControl.exe",
+        "C:\\WINDOWS\\system32\\drivers\\vmbus.sys"
     };
 
     LPCSTR patterns[] = {
@@ -65,29 +72,34 @@ int CheckFile()
         "C:\\*-#.log"
     };
 
-    for (int i = 0; i < (sizeof(fname) / sizeof(LPCSTR)); i++)
+    bool foundVmFile = false;
+
+    for (int i = 0; i < sizeof(fname) / sizeof(LPCSTR); ++i)
     {
-        cout << "Checking file: " << fname[i] << endl;
         if (FileExists(fname[i]))
         {
-            cout << "[+] File exists: " << fname[i] << endl;
-            MessageBox(NULL, "This program can't run in a virtual machine.", "Error", MB_OK | MB_ICONERROR);
-            exit(1);
+            foundVmFile = true;
+            break;
         }
     }
 
-    for (int i = 0; i < (sizeof(patterns) / sizeof(LPCSTR)); i++)
+    for (int i = 0; i < sizeof(patterns) / sizeof(LPCSTR); ++i)
     {
-        cout << "Checking pattern: " << patterns[i] << endl;
-        if (CheckFilePattern("C:\\", patterns[i]))
+        if (CheckFilePattern(patterns[i]))
         {
-            cout << "[+] File pattern matched: " << patterns[i] << endl;
-            MessageBox(NULL, "This program can't run in a virtual machine.", "Error", MB_OK | MB_ICONERROR);
-            exit(1);
+            foundVmFile = true;
+            break;
         }
     }
 
-    MessageBox(NULL, "Not a VM.", "Success", MB_OK | MB_ICONEXCLAMATION);
+    if (foundVmFile)
+    {
+        MessageBox(NULL, "This program can't run in a virtual machine.", "Error", MB_OK | MB_ICONERROR);
+    }
+    else
+    {
+        MessageBox(NULL, "Not a VM.", "Success", MB_OK | MB_ICONEXCLAMATION);
+    }
 
     return 0;
 }
