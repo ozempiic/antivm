@@ -83,7 +83,7 @@ int CheckFile()
         {
             cout << "[+] File pattern matched: " << patterns[i] << endl;
             MessageBox(NULL, "This program can't run in a virtual machine.", "Error", MB_OK | MB_ICONERROR);
-            exit(1); // Exit the program
+            exit(1);
         }
     }
 
