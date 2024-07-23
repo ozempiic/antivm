@@ -7,6 +7,6 @@ This program detects virtual machine environments by checking for specific files
 ## how it works
 
 - **File Checking**
-- **Pattern Matching**:
+- **Pattern Matching**
 - **Detection Logic**
 - **Inspiration**: This program is inspired by techniques outlined at [Unprotect.it, Detecting Virtual Environment Files](https://unprotect.it/technique/detecting-virtual-environment-files/) and has been extended ;3
