@@ -2,7 +2,7 @@
 
 ## Overview
 
-This program detects virtual machine environments by checking for specific files and file patterns commonly associated with virtualization technologies. If any of these files or patterns are found, the program terminates with an error message indicating that it cannot run in a virtual machine environment.
+This program detects virtual machine environments by checking for specific files and file patterns commonly associated with virtual machines. If any of these files or patterns are found, the program terminates with an error message indicating that it cannot run in a virtual machine.
 
 ## how it works
 
